@@ -1,4 +1,3 @@
-// globals.js
 import 'dotenv/config';
 
 const configurations = {
@@ -14,4 +13,4 @@ const configurations = {
   },
 };
 
-export default configurations; // Usa export default en lugar de module.exports
+export default configurations;

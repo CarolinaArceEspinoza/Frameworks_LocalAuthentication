@@ -3,8 +3,6 @@
   {{title}}
 </h2>
 <form method="POST">
-  {{! Input names have to match the name of the fields in the mongo schema object }}
-  {{! Mapping is not automatic, but it's best practices }}
   <fieldset>
     <label for="name" class="col-2">
       Name:
@@ -19,18 +17,14 @@
   </fieldset>
   <fieldset>
     <label for="category" class="col-2">
-      Category:
+      Activity:
     </label>
-    {{! <input name="category" id="category" required /> }}
     <select name="category" id="category">
-      {{! for loop to render options }}
       {{#each categories}}
         <option>{{ this.name }}</option>
       {{/each}}
     </select>
   </fieldset>
-  {{! No need to specify Status since it has a default value }}
-  {{! Button needs to be inside <form> element to trigger POST }}
   <button class="button">
     Save
   </button>

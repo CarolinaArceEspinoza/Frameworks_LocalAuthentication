@@ -1,3 +1,4 @@
+// Import core modules and libraries needed for the app
 import createError from 'http-errors';
 import express from 'express';
 import path from 'path';
@@ -15,12 +16,12 @@ import { Strategy as googleStrategy } from 'passport-google-oauth20';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
-// Solo cargar dotenv si el entorno no es producción
+// Load dotenv only if the environment is not production
 if (process.env.NODE_ENV !== 'production') {
   await import('dotenv/config');
 }
 
-// Configuración de variables para el entorno de producción y desarrollo
+// Define configuration for production and development environments
 const isProduction = process.env.NODE_ENV === 'production';
 
 const configs = {
@@ -28,39 +29,46 @@ const configs = {
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: isProduction
-      ? 'https://frameworks-local-authentication-eck1abiwr-caro-arces-projects.vercel.app/auth/google/callback' // URL de producción en Vercel
-      : 'http://localhost:3000/auth/google/callback'    // URL local para desarrollo
+      ? 'https://frameworks-local-authentication-eck1abiwr-caro-arces-projects.vercel.app/auth/google/callback' // Production URL
+      : 'http://localhost:3000/auth/google/callback' // Local development URL
   },
   mongoURI: process.env.MONGO_URI,
   sessionSecret: process.env.SESSION_SECRET,
 };
 
+// Initialize the Express application
 const app = express();
 
-// Obtener __dirname para trabajar con ES Modules
+// Set up __dirname for ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// Configure view engine and views directory
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// Middleware setup
+app.use(logger('dev')); // Logger for development
+app.use(express.json()); // Parse JSON request bodies
+app.use(express.urlencoded({ extended: false })); // Parse URL-encoded request bodies
+app.use(cookieParser()); // Parse cookies
+app.use(express.static(path.join(__dirname, 'public'))); // Serve static files
 
+// Configure session management
 app.use(session({
   secret: configs.sessionSecret,
   resave: false,
   saveUninitialized: false
 }));
 
+// Initialize Passport for authentication
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Configure Passport for local strategy (authentication) with Mongoose User model
 passport.use(User.createStrategy());
 
+// Configure Passport with Google OAuth 2.0 strategy
 passport.use(new googleStrategy(
   {
     clientID: configs.google.clientID,
@@ -68,10 +76,12 @@ passport.use(new googleStrategy(
     callbackURL: configs.google.callbackURL
   },
   async (accessToken, refreshToken, profile, done) => {
+    // Check if the user exists in the database
     const user = await User.findOne({ oauthId: profile.id });
     if (user) {
       return done(null, user);
     } else {
+      // Create and save a new user if not found
       const newUser = new User({
         username: profile.displayName,
         oauthId: profile.id,
@@ -84,13 +94,16 @@ passport.use(new googleStrategy(
   }
 ));
 
+// Serialize and deserialize user for session management
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-app.use('/', indexRouter);
-app.use('/categories', categoriesRouter);
-app.use('/workshops', workshopsRouter);
+// Set up routers for different routes in the app
+app.use('/', indexRouter); // Home page
+app.use('/categories', categoriesRouter); // Categories page
+app.use('/workshops', workshopsRouter); // Workshops page
 
+// Connect to MongoDB using Mongoose with environment URI
 mongoose.connect(configs.mongoURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -98,6 +111,7 @@ mongoose.connect(configs.mongoURI, {
 .then(() => console.log('Connected Successfully!'))
 .catch((error) => console.log(`Error while connecting: ${error}`));
 
+// Register Handlebars helpers for view templates
 hbs.registerHelper('createOptionElement', (currentValue, selectedValue) => {
   const selectedProperty = currentValue == selectedValue.toString() ? 'selected' : '';
   return new hbs.SafeString(`<option ${selectedProperty}>${currentValue}</option>`);
@@ -107,10 +121,12 @@ hbs.registerHelper('toShortDate', (longDateValue) => {
   return new hbs.SafeString(longDateValue.toLocaleDateString('en-CA'));
 });
 
+// Error handling middleware for 404 (not found)
 app.use((req, res, next) => {
   next(createError(404));
 });
 
+// General error handler for other errors
 app.use((err, req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -118,4 +134,5 @@ app.use((err, req, res, next) => {
   res.render('error');
 });
 
+// Export the app as a module for use in other files
 export default app;

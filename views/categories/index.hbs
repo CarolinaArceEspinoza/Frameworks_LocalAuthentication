@@ -4,21 +4,21 @@
 </h2>
 {{!-- Add links to CRUD operations --}}
 {{#if user}}
-  <p><a href="/categories/add">» Add a new Course</a></p>
+  <p><a href="/categories/add">» Add a new Activity</a></p>
 {{/if}}
 
 {{!-- To Show data --}}
 <table>
   <thead>
-    <th>Course Name</th>
     <th>Category</th>
+    <th>Activity</th>
     <th>Ages</th>
   </thead>
   <tbody>
   {{#each dataset}}
     <tr>
-      <td><strong>{{this.name}}</strong></td>
-      <td>{{this.category}}</td>
+      <td><strong>{{this.category}}</strong></td>
+      <td>{{this.name}}</td>
       <td>{{this.ages}}</td>
     </tr>
   {{/each}}

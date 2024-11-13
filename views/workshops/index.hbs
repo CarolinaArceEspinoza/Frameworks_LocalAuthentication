@@ -2,7 +2,6 @@
 <h2>{{title}}</h2>
 {{!-- CRUD Functionality --}}
 {{!-- CREATE button --}}
-{{! Only show CRUD buttons if there's a session (authenticated user) }}
 {{#if user}}
   <p><a href="/workshops/add">» Add a new workshop</a></p>
 {{/if}}
@@ -11,7 +10,7 @@
     <thead>
         <th>Name</th>
         <th>Date</th>
-        <th>Category</th>
+        <th>Activity</th>
         <th>Support</th>
         <th></th>
     </thead>

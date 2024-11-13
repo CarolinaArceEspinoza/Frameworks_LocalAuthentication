@@ -59,13 +59,13 @@ router.get("/logout", (req, res, next) => {
   });
 });
 
-// Autenticación con Google
+// Auth Google
 router.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["profile"] })
 );
 
-// Callback de Google después de autenticarse
+// Callback Google
 router.get(
   "/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/login" }),
@@ -74,4 +74,4 @@ router.get(
   }
 );
 
-export default router; // Exportar el router usando export default
+export default router;

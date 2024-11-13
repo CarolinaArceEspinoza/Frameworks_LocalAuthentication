@@ -1,6 +1,8 @@
-import mongoose from 'mongoose';  // Usar import
-import plm from 'passport-local-mongoose';  // Usar import
+// Import mongoose
+import mongoose from 'mongoose';
+import plm from 'passport-local-mongoose';
 
+// Schema 
 const dataSchemaObj = {
     username: { type: String },
     password: { type: String },
@@ -9,8 +11,8 @@ const dataSchemaObj = {
     created: { type: Date },
 };
 
+// Create mongoose schema
 const userSchema = new mongoose.Schema(dataSchemaObj);
 userSchema.plugin(plm);
 
-// Exportar el modelo como default
 export default mongoose.model('User', userSchema);
