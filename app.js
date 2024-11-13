@@ -20,6 +20,21 @@ if (process.env.NODE_ENV !== 'production') {
   await import('dotenv/config');
 }
 
+// Configuración de variables para el entorno de producción y desarrollo
+const isProduction = process.env.NODE_ENV === 'production';
+
+const configs = {
+  google: {
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: isProduction
+      ? 'https://tuapp.vercel.app/auth/google/callback' // URL de producción en Vercel
+      : 'http://localhost:3000/auth/google/callback'    // URL local para desarrollo
+  },
+  mongoURI: process.env.MONGO_URI,
+  sessionSecret: process.env.SESSION_SECRET,
+};
+
 const app = express();
 
 // Obtener __dirname para trabajar con ES Modules
@@ -36,7 +51,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
-  secret: process.env.SESSION_SECRET,
+  secret: configs.sessionSecret,
   resave: false,
   saveUninitialized: false
 }));
@@ -48,9 +63,9 @@ passport.use(User.createStrategy());
 
 passport.use(new googleStrategy(
   {
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: process.env.GOOGLE_CALLBACK_URL
+    clientID: configs.google.clientID,
+    clientSecret: configs.google.clientSecret,
+    callbackURL: configs.google.callbackURL
   },
   async (accessToken, refreshToken, profile, done) => {
     const user = await User.findOne({ oauthId: profile.id });
@@ -76,7 +91,7 @@ app.use('/', indexRouter);
 app.use('/categories', categoriesRouter);
 app.use('/workshops', workshopsRouter);
 
-mongoose.connect(process.env.MONGO_URI, {
+mongoose.connect(configs.mongoURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
