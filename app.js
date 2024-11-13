@@ -28,7 +28,7 @@ const configs = {
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: isProduction
-      ? 'https://tuapp.vercel.app/auth/google/callback' // URL de producción en Vercel
+      ? 'https://frameworks-local-authentication-eck1abiwr-caro-arces-projects.vercel.app/auth/google/callback' // URL de producción en Vercel
       : 'http://localhost:3000/auth/google/callback'    // URL local para desarrollo
   },
   mongoURI: process.env.MONGO_URI,
