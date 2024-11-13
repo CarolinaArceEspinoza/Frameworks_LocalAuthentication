@@ -1,0 +1,28 @@
+<div class="content">
+  <h2>Login</h2>
+  {{!-- Show error message if credentials are incorrect --}}
+  {{#if messages}}
+    <div class="alert alert-danger">
+      Invalid credentials
+    </div>
+  {{else}}
+    <h3><strong>Please enter your credentials</strong></h3>
+  {{/if}}
+  <form method="post">
+    <fieldset class="form-group">
+      <label for="username" class="col-2 control-label">Username: *</label>
+      <input name="username" id="username" required />
+    </fieldset>
+    <fieldset class="form-group">
+      <label for="password" class="col-2 control-label">Password: *</label>
+      <input name="password" id="password" type="password" required />
+    </fieldset>
+    <fieldset class="form-group">
+      <button class="button">Login</button>
+      <a class="button" href="/auth/google">Login with Google</a>
+      <hr />
+      Need an account?
+      <a href="/register" title="Register">Register</a>
+    </fieldset>
+  </form>
+</div>

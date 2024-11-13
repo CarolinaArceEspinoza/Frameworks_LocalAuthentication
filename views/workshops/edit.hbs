@@ -1,0 +1,51 @@
+<div class="content">
+<h2>
+  {{title}}
+</h2>
+<form method="POST">
+  {{! Input names have to match the name of the fields in the mongo schema object }}
+  {{! Mapping is not automatic, but it's best practices }}
+  <fieldset>
+    <label for="name" class="col-2">
+      Name:
+    </label>
+    <input name="name" id="name" required value="{{workshop.name}}" />
+  </fieldset>
+  <fieldset>
+    <label for="dueDate" class="col-2">
+      Date:
+    </label>
+    {{!-- Use hbs helper function to format date stored in the database accordingly --}}
+    <input name="dueDate" id="dueDate" required type="date" value="{{toShortDate workshop.dueDate}}" />
+  </fieldset>
+  <fieldset>
+    <label for="category" class="col-2">
+      Category:
+    </label>
+    {{! <input name="category" id="category" required /> }}
+    <select name="category" id="category">
+      {{#each categories}}
+        {{! Use HBS helper function to customize rendering }}
+        {{createOptionElement this.name ../workshop.category}}
+      {{/each}}
+    </select>
+  </fieldset>
+  {{! Add fieldset for support }}
+  <fieldset>
+    <label for="support" class="col-2">
+      Support:
+    </label>
+    {{! <input name="category" id="category" required /> }}
+    <select name="support" id="support">
+        {{! Use HBS helper function to customize rendering }}
+        {{createOptionElement "NO NEEDED" workshop.support}}
+        {{createOptionElement "ADD 1 INSTRUCTOR" workshop.support}}
+        {{createOptionElement "ADD 2 INSTRUCTORS" workshop.support}}
+    </select>
+  </fieldset>
+  {{! Button needs to be inside <form> element to trigger POST }}
+  <button class="button">
+    Save
+  </button>
+</form>
+</div>

@@ -1,0 +1,45 @@
+<div class="content">
+<h2>{{title}}</h2>
+{{!-- CRUD Functionality --}}
+{{!-- CREATE button --}}
+{{! Only show CRUD buttons if there's a session (authenticated user) }}
+{{#if user}}
+  <p><a href="/workshops/add">» Add a new workshop</a></p>
+{{/if}}
+{{!-- READ Show Table to view all workshops in db --}}
+<table>
+    <thead>
+        <th>Name</th>
+        <th>Date</th>
+        <th>Category</th>
+        <th>Support</th>
+        <th></th>
+    </thead>
+    <tbody>
+        {{!-- Retrieve all workshops and loop --}}
+        {{#each dataset}}
+        <tr>
+            <td><strong>{{this.name}}</strong></td>
+            {{!-- Use the hbs helper function to format the date accordingly --}}
+            <td>{{toShortDate this.dueDate}}</td>
+            <td>{{this.category}}</td>
+            <td>{{this.support}}</td>
+            {{!-- UPDATE and DELETE buttons --}}
+            <td>
+                {{! Only show CRUD buttons if there's a session (authenticated user) }}
+                {{!-- use ../ to navigate out of the for loop into the global scope --}}
+                {{#if ../user}}
+                <a href="/workshops/edit/{{this._id}}" class="button">Edit</a>
+                <a
+                    href="/workshops/delete/{{this._id}}"
+                    onclick="return confirmDeletion()"
+                    class="button button2"
+                >Delete</a>
+                {{/if}}
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+    
+</div>

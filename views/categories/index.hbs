@@ -1,0 +1,27 @@
+<div class="content">
+<h2>
+  {{title}}
+</h2>
+{{!-- Add links to CRUD operations --}}
+{{#if user}}
+  <p><a href="/categories/add">» Add a new Course</a></p>
+{{/if}}
+
+{{!-- To Show data --}}
+<table>
+  <thead>
+    <th>Course Name</th>
+    <th>Category</th>
+    <th>Ages</th>
+  </thead>
+  <tbody>
+  {{#each dataset}}
+    <tr>
+      <td><strong>{{this.name}}</strong></td>
+      <td>{{this.category}}</td>
+      <td>{{this.ages}}</td>
+    </tr>
+  {{/each}}
+  </tbody>
+</table>
+</div>
