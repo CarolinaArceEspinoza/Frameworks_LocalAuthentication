@@ -1,7 +1,5 @@
+// globals.js
 import 'dotenv/config';
-
-// Global configurations object contains Application Level variables such as:
-// client secrets, passwords, connection strings, and misc flags
 
 const configurations = {
   ConnectionStrings: {
@@ -15,4 +13,5 @@ const configurations = {
     }
   },
 };
-module.exports = configurations;
+
+export default configurations; // Usa export default en lugar de module.exports
