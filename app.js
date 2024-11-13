@@ -7,7 +7,6 @@ import indexRouter from './routes/index.js';
 import categoriesRouter from './routes/categories.js';
 import workshopsRouter from './routes/workshops.js';
 import mongoose from 'mongoose';
-import { default as configs } from './configs/globals.js';
 import hbs from 'hbs';
 import passport from 'passport';
 import session from 'express-session';
@@ -15,13 +14,15 @@ import User from './models/user.js';
 import { Strategy as googleStrategy } from 'passport-google-oauth20';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import dotenv from 'dotenv'; // Importar dotenv
 
-dotenv.config(); // Cargar las variables de entorno desde el archivo .env
+// Solo cargar dotenv si el entorno no es producción
+if (process.env.NODE_ENV !== 'production') {
+  await import('dotenv/config');
+}
 
 const app = express();
 
-// Obtén la ruta del directorio de manera compatible con ES Modules
+// Obtener __dirname para trabajar con ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -35,7 +36,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
-  secret: process.env.SESSION_SECRET, // Usar la variable de entorno para el secreto de la sesión
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false
 }));
@@ -47,9 +48,9 @@ passport.use(User.createStrategy());
 
 passport.use(new googleStrategy(
   {
-    clientID: process.env.GOOGLE_CLIENT_ID, // Usar la variable de entorno para el Google Client ID
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET, // Usar la variable de entorno para el Google Client Secret
-    callbackURL: process.env.GOOGLE_CALLBACK_URL // Usar la variable de entorno para el callback URL
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: process.env.GOOGLE_CALLBACK_URL
   },
   async (accessToken, refreshToken, profile, done) => {
     const user = await User.findOne({ oauthId: profile.id });
@@ -75,36 +76,29 @@ app.use('/', indexRouter);
 app.use('/categories', categoriesRouter);
 app.use('/workshops', workshopsRouter);
 
-mongoose
-  .connect(process.env.MONGO_URI, { // Usar la variable de entorno para la URI de MongoDB
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then((message) => console.log('Connected Successfully!'))
-  .catch((error) => console.log(`Error while connecting: ${error}`));
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log('Connected Successfully!'))
+.catch((error) => console.log(`Error while connecting: ${error}`));
 
 hbs.registerHelper('createOptionElement', (currentValue, selectedValue) => {
-  var selectedProperty = '';
-  if (currentValue == selectedValue.toString()) {
-    selectedProperty = 'selected';
-  }
-  return new hbs.SafeString(
-    `<option ${selectedProperty}>${currentValue}</option>`
-  );
+  const selectedProperty = currentValue == selectedValue.toString() ? 'selected' : '';
+  return new hbs.SafeString(`<option ${selectedProperty}>${currentValue}</option>`);
 });
 
 hbs.registerHelper('toShortDate', (longDateValue) => {
   return new hbs.SafeString(longDateValue.toLocaleDateString('en-CA'));
 });
 
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   next(createError(404));
 });
 
-app.use(function (err, req, res, next) {
+app.use((err, req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
   res.status(err.status || 500);
   res.render('error');
 });
