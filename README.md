@@ -1,97 +1,64 @@
-# Instructions
+# Frameworks Local and Google Authentication
 
-### Part 1 Improving our Login functionality
+This project is an Express.js application with Google OAuth 2.0 integration for user authentication. It demonstrates a full-featured application that includes basic CRUD operations and user access control. Deployed on Vercel, the project uses MongoDB Atlas as its database.
 
-- In Layout.hbs
-    - Add if-else statement to:
-        - Show the Login/Register links when user is anonymous
-        - Display a logout link and the current user's email address
-    - We still need to pass the User object back to the view
-- In Routes/Project.js
-    - Modify every method that renders a view and add user object
-        - Every GET handler except delete because it's a redirect
-- In Routes/Courses.js
-    - Modify every method that renders a view and add user object
-        - Every GET handler
--  Try out to verify the navbar changes accordingly
-- In Routes/Index.js
-    - Modify every method that renders a view and add user object
-    - Add GET handler for logout
-        - Call logout() using the request object
-        - Redirect to login
+---
+## Project Overview
+This application includes routes to handle user registration and authentication using Google OAuth, and routes for managing categories and workshops. All user data is stored in MongoDB Atlas, and sessions are managed using express-session.
 
-### Part 2 Adding Authorization to protect sections of my website
+## Routes Overview
+- Authentication Routes
+        - GET /auth/google: Initiates Google OAuth authentication.
+        - GET /auth/google/callback: Callback URL for Google OAuth to process authentication and redirect users after login.
+        - GET /logout: Logs out the current user and terminates the session.
+## CRUD Routes
+- Categories Routes
+        - GET /categories: Fetches a list of all categories.
+        - POST /categories: Creates a new category (requires user authentication).
+        - GET /categories/:id: Fetches details of a specific category by ID.
+        - PUT /categories/:id: Updates an existing category by ID (requires user authentication).
+        - DELETE /categories/:id: Deletes a category by ID (requires user authentication).
+- Workshops Routes
+        - GET /workshops: Fetches a list of all workshops.
+        - POST /workshops: Creates a new workshop (requires user authentication).
+        - GET /workshops/:id: Fetches details of a specific workshop by ID.
+        - PUT /workshops/:id: Updates an existing workshop by ID (requires user authentication).
+        - DELETE /workshops/:id: Deletes a workshop by ID (requires user authentication).
 
-- While logged out, navigate to /Project and /Courses
-    - Verify that I can still perform CRUD operations
-- There are generally two approaches for securing views
-    - Have 1 view for authenticated users and 1 for anonymous users
-    - Or have 1 view for both but hide/show links and buttons that perform actions such as CRUD operations
-    - However, this only covers what they can see. Better authorization has to be written at the controller level.
-- In Views/Projects/Index.hbs
-    - Use if-else statements to hide the Add button and the Actions column
-- In Views/Courses/Index.hbs
-    - Use a if-else statement to hide the Add button 
-- Navigate to /Projects/Add while anonymous
-    - This view is still visible if somebody knows or guesses the URL, which is a security flaw
-- In Routes/Project.js
-    - Create a new middleware function called IsLoggedIn()
-        - Check user is authenticated by calling isAuthenticated() method in the request object
-        - If User is authenticated execute next
-        - Else send back to login
-    - Inject this middleware in each handler in the controller
-    - Verify that everything is locked now
-- Make this middleware function reusable
-    - Create a new folder called Extensions
-    - Add a file named authentication.js
-    - Copy over the function
-    - Export the function
-- Now we can import this middleware in any router as needed
-- Apply the same functionality for Course
-    - Routes/Course.js
-    - Inject authentication middleware function in GET and POST handlers for '/Courses/Add'
+## Access Control
+Access control is handled via session-based authentication with Google OAuth. When a user logs in, a session is created and stored in the database, allowing access to protected routes based on their authentication status.
 
-### Part 3 Implementing GitHub authentication
+- Authenticated Routes: CRUD operations that modify data (like POST, PUT, and DELETE requests) are restricted to authenticated users only.
+- Session Management: express-session is used to manage sessions. Each user session is uniquely identified and allows the user to remain logged in as they navigate the application.
+- Role-based Control: While this project currently supports authenticated users for protected routes, it can be extended to enforce specific roles and permissions for advanced access control.
 
-- Open a browser and navigate to https://github.com/settings/applications/new
-    - Application name should be COMP2068 Project Tracker
-    - Homepage URL is http://localhost:3000
-    - Authorization callback URL is http://localhost:3000/github/callback this URL needs to change when deploying to Render or Azure
-    - Generate the clientId and clientSecret values and copy them over to your .env file
-    - Add three new keys named as below
-        - GITHUB_CLIENT_ID
-        - GITHUB_CLIENT_SECRET
-        - GITHUB_CALLBACK_URL
-    - Add the corresponding configuration values in globals.js
-        - Create a new section called Authentication
-        - Add an inner section called GitHub
-        - Add the following keys:
-            - ClientId > use process.env to access GITHUB_CLIENT_ID
-            - ClientSecret > use process.env to access GITHUB_CLIENT_SECRET
-            - CallbackUrl > use process.env to access GITHUB_CALLBACK_URL
-- Make sure the application is not running and install the following npm package:
-    - npm i passport-github2
-    - https://www.npmjs.com/package/passport-github2
-- In Models/User.js
-    - Add oauthId: String to record the ID that's received from the login provider
-    - Add oauthProvider: String to record the provider type (GitHub, Twitter, etc)
-    - Add created: Date to record the time when the user is created in the DB
-    - Note: When creating a local user, these will be blank.
-- Add a Config folder and create a globals.js file
-    - Add a new section called github and then the following variables:
-        - clientId and clientSecret which is used by the authentication
-        - callbackUrl which is the url in our application that users will be sent back to after logging in with the external provider
-- In App.js
-    - Import the globals.js file at the top of the document
-    - Import the Strategy class in the passport-github2 package just after importing passport and session
-    - Call passport.use() to configure the github strategy and pass the required API keys and User model
-    - Add a callback function to handle two scenarios
-        - new user
-        - returning user
-- In Views/Login.hbs
-    - Add another login button with href="/github"
-- In Routes/Index.js
-    - Add a two GET handlers as specified in the documentation
-    - One handles when the user clicks "Login with GitHub" on the login page
-    - Second one handles when github.com sends the user back to us after an authentication attempt
-- Try it out and verify new users in the database
+## Deployment
+The project is deployed on Vercel, which serves the application as a serverless function. Ensure your .env variables are also set up in Vercel for a seamless deployment.
+
+[text](https://frameworks-local-authentication.vercel.app/)
+
+
+## Setup Instructions
+
+### 1. Clone the repository
+```bash
+git clone <repository-url>
+cd <project-folder>
+
+### 2. Install dependencies
+npm install
+
+### 3. Configure environment variables
+Create a .env file in the root directory of your project with the following variables:
+
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+MONGO_URI=your-mongodb-uri
+SESSION_SECRET=your-session-secret
+
+- Note: Replace your-google-client-id, your-google-client-secret, your-mongodb-uri, and your-session-secret with actual values for your Google OAuth credentials, MongoDB URI, and a secure session secret.
+
+### 4. Run the application locally
+npm start
+
+The application should now be running on http://localhost:3000.
