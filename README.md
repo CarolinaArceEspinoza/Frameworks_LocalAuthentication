@@ -12,15 +12,15 @@ This application includes routes to handle user registration and authentication 
 
 
 ## Routes Overview
-- Authentication Routes
+- Authentication Routes  
         - GET /auth/google: Initiates Google OAuth authentication.  
         - GET /auth/google/callback: Callback URL for Google OAuth to process authentication and redirect users after login.  
         - GET /logout: Logs out the current user and terminates the session.
 
 ![Project Screenshot](public/images/Screenshot03.jpg)  
 
-## CRUD Routes
-- Categories Routes
+## CRUD Routes  
+- Categories Routes  
         - GET /categories: Fetches a list of all categories.  
         - POST /categories: Creates a new category (requires user authentication).  
         - GET /categories/:id: Fetches details of a specific category by ID.  
@@ -31,7 +31,7 @@ This application includes routes to handle user registration and authentication 
 ![Project Screenshot](public/images/Screenshot05.jpg)
 
 
-- Workshops Routes
+- Workshops Routes  
         - GET /workshops: Fetches a list of all workshops.  
         - POST /workshops: Creates a new workshop (requires user authentication).  
         - GET /workshops/:id: Fetches details of a specific workshop by ID.  
@@ -86,5 +86,5 @@ SESSION_SECRET=your-session-secret
 npm start
 ```
 
-The application should now be running on http://localhost:3000.
+The application should now be running on http://localhost:3000  
 Images Copyright Freepik Company S.L. All rights reserved.
