@@ -2,7 +2,8 @@
 
 This project is an Express.js application with Google OAuth 2.0 integration for user authentication. It demonstrates a full-featured application that includes basic CRUD operations and user access control. Deployed on Vercel, the project uses MongoDB Atlas as its database.
 
-![Project Screenshot](public/images/Screenshot01.jpg)
+![Project Screenshot](public/images/Screenshot01.jpg)  
+![Project Screenshot](public/images/Screenshot08.jpg)
 
 ---
 ## Project Overview
