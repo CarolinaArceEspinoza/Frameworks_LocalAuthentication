@@ -8,9 +8,7 @@ This project is an Express.js application with Google OAuth 2.0 integration for 
 ## Project Overview
 This application includes routes to handle user registration and authentication using Google OAuth, and routes for managing categories and workshops. All user data is stored in MongoDB Atlas, and sessions are managed using express-session.  
 
-![Project Screenshot](public/images/Screenshot02.jpg)  
-
-![Project Screenshot](public/images/Screenshot08.jpg)
+![Project Screenshot](public/images/Screenshot02.jpg) 
 
 
 ## Routes Overview
