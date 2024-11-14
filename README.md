@@ -35,7 +35,7 @@ Access control is handled via session-based authentication with Google OAuth. Wh
 ## Deployment
 The project is deployed on Vercel, which serves the application as a serverless function. Ensure your .env variables are also set up in Vercel for a seamless deployment.
 
-[text](https://frameworks-local-authentication.vercel.app/)
+[Click here for the live website](https://frameworks-local-authentication.vercel.app/)
 
 
 ## Setup Instructions
@@ -44,21 +44,28 @@ The project is deployed on Vercel, which serves the application as a serverless 
 ```bash
 git clone <repository-url>
 cd <project-folder>
+```
 
 ### 2. Install dependencies
+```bash
 npm install
+```
 
 ### 3. Configure environment variables
 Create a .env file in the root directory of your project with the following variables:
 
+```bash
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
 MONGO_URI=your-mongodb-uri
 SESSION_SECRET=your-session-secret
+```
 
 - Note: Replace your-google-client-id, your-google-client-secret, your-mongodb-uri, and your-session-secret with actual values for your Google OAuth credentials, MongoDB URI, and a secure session secret.
 
 ### 4. Run the application locally
+```bash
 npm start
+```
 
 The application should now be running on http://localhost:3000.
