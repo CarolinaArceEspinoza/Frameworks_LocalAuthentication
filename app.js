@@ -31,7 +31,7 @@ const configs = {
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: isProduction
       ? 'https://frameworks-local-authentication-eck1abiwr-caro-arces-projects.vercel.app/auth/google/callback' // Production URL
-      : 'http://localhost:3000/auth/google/callback' // Local development URL
+      : 'https://frameworks-local-authentication-eck1abiwr-caro-arces-projects.vercel.app/auth/google/callback' // Production URL
   },
   mongoURI: process.env.MONGO_URI,
   sessionSecret: process.env.SESSION_SECRET,
