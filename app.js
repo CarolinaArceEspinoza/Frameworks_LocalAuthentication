@@ -22,7 +22,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // Define configuration for production and development environments
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = true;
 console.log(isProduction);
 
 const configs = {
