@@ -21,10 +21,10 @@ This application includes routes to handle user registration and authentication 
 
 ## CRUD Routes
 - Categories Routes
-        - GET /categories: Fetches a list of all categories.
-        - POST /categories: Creates a new category (requires user authentication).
-        - GET /categories/:id: Fetches details of a specific category by ID.
-        - PUT /categories/:id: Updates an existing category by ID (requires user authentication).
+        - GET /categories: Fetches a list of all categories.  
+        - POST /categories: Creates a new category (requires user authentication).  
+        - GET /categories/:id: Fetches details of a specific category by ID.  
+        - PUT /categories/:id: Updates an existing category by ID (requires user authentication).  
 
 ![Project Screenshot](public/images/Screenshot04.jpg)  
 
@@ -44,9 +44,11 @@ This application includes routes to handle user registration and authentication 
 ## Access Control
 Access control is handled via session-based authentication with Google OAuth. When a user logs in, a session is created and stored in the database, allowing access to protected routes based on their authentication status.
 
-- Authenticated Routes: CRUD operations that modify data (like POST, PUT, and DELETE requests) are restricted to authenticated users only.
-- Session Management: express-session is used to manage sessions. Each user session is uniquely identified and allows the user to remain logged in as they navigate the application.
-- Role-based Control: While this project currently supports authenticated users for protected routes, it can be extended to enforce specific roles and permissions for advanced access control.
+- Authenticated Routes: CRUD operations that modify data (like POST, PUT, and DELETE requests) are restricted to authenticated users only.  
+- Session Management: express-session is used to manage sessions. Each user session is uniquely identified and allows the user to remain logged in as they navigate the application.  
+- Role-based Control: While this project currently supports authenticated users for protected routes, it can be extended to enforce specific roles and permissions for advanced access control.    
+
+![Project Screenshot](public/images/Screenshot07.jpg) 
 
 ## Deployment
 The project is deployed on Vercel, which serves the application as a serverless function. Ensure your .env variables are also set up in Vercel for a seamless deployment.
