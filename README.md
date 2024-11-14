@@ -6,26 +6,40 @@ This project is an Express.js application with Google OAuth 2.0 integration for 
 
 ---
 ## Project Overview
-This application includes routes to handle user registration and authentication using Google OAuth, and routes for managing categories and workshops. All user data is stored in MongoDB Atlas, and sessions are managed using express-session.
+This application includes routes to handle user registration and authentication using Google OAuth, and routes for managing categories and workshops. All user data is stored in MongoDB Atlas, and sessions are managed using express-session.  
+
+![Project Screenshot](public/images/Screenshot02.jpg)
+
 
 ## Routes Overview
 - Authentication Routes
-        - GET /auth/google: Initiates Google OAuth authentication.
-        - GET /auth/google/callback: Callback URL for Google OAuth to process authentication and redirect users after login.
+        - GET /auth/google: Initiates Google OAuth authentication.  
+        - GET /auth/google/callback: Callback URL for Google OAuth to process authentication and redirect users after login.  
         - GET /logout: Logs out the current user and terminates the session.
+
+![Project Screenshot](public/images/Screenshot03.jpg)  
+
 ## CRUD Routes
 - Categories Routes
         - GET /categories: Fetches a list of all categories.
         - POST /categories: Creates a new category (requires user authentication).
         - GET /categories/:id: Fetches details of a specific category by ID.
         - PUT /categories/:id: Updates an existing category by ID (requires user authentication).
-        - DELETE /categories/:id: Deletes a category by ID (requires user authentication).
+
+![Project Screenshot](public/images/Screenshot04.jpg)  
+
+![Project Screenshot](public/images/Screenshot05.jpg)
+
+
 - Workshops Routes
-        - GET /workshops: Fetches a list of all workshops.
-        - POST /workshops: Creates a new workshop (requires user authentication).
-        - GET /workshops/:id: Fetches details of a specific workshop by ID.
-        - PUT /workshops/:id: Updates an existing workshop by ID (requires user authentication).
-        - DELETE /workshops/:id: Deletes a workshop by ID (requires user authentication).
+        - GET /workshops: Fetches a list of all workshops.  
+        - POST /workshops: Creates a new workshop (requires user authentication).  
+        - GET /workshops/:id: Fetches details of a specific workshop by ID.  
+        - PUT /workshops/:id: Updates an existing workshop by ID (requires user authentication).  
+        - DELETE /workshops/:id: Deletes a workshop by ID (requires user authentication).    
+
+
+![Project Screenshot](public/images/Screenshot06.jpg) 
 
 ## Access Control
 Access control is handled via session-based authentication with Google OAuth. When a user logs in, a session is created and stored in the database, allowing access to protected routes based on their authentication status.
@@ -71,3 +85,4 @@ npm start
 ```
 
 The application should now be running on http://localhost:3000.
+Images Copyright Freepik Company S.L. All rights reserved.
